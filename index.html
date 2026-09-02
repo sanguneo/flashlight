@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Starry Flashlight — Interactive Showcase</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<main class="stage is-on" id="stage">
+  <!-- 2번: 아래에 깔리는 고흐 화풍 밤하늘 -->
+  <div class="layer layer--vangogh" aria-hidden="true"></div>
+
+  <!-- 1번: 위를 덮는 실사 밤하늘 -->
+  <div class="layer layer--real" aria-hidden="true"></div>
+
+  <!-- 손전등 궤적 안에서만 2번이 드러난다 (경계는 마스크로 페더링) -->
+  <div class="layer layer--reveal" id="reveal" aria-hidden="true"></div>
+  <div class="layer layer--beam" id="beam" aria-hidden="true"></div>
+
+  <!-- 전경: 생성된 언덕 / 도시 불빛 / 나무 -->
+  <div class="layer layer--ground" aria-hidden="true"></div>
+
+  <!-- 인물: 몸통은 고정, 팔은 어깨를 축으로 회전 -->
+  <div class="figure" id="figure" aria-hidden="true">
+    <img class="figure__body" src="assets/figure-body.png" alt="" draggable="false" />
+    <span class="figure__pivot" id="pivot"></span>
+    <div class="figure__arm" id="arm">
+      <img src="assets/figure-arm.png" alt="" draggable="false" />
+      <span class="figure__tip" id="tip"></span>
+    </div>
+  </div>
+
+  <div class="bulb" id="bulb" aria-hidden="true"></div>
+
+  <div class="ui">
+    <p class="ui__eyebrow">Interactive Showcase</p>
+    <h1 class="ui__title">별이 빛나는 밤을 비춰보세요</h1>
+    <p class="ui__hint">마우스를 움직여 손전등을 겨누고, 화면을 클릭하거나 <kbd>Space</kbd> 로 껐다 켤 수 있어요.</p>
+    <button class="ui__toggle" id="toggle" type="button" aria-pressed="true">손전등 끄기</button>
+  </div>
+</main>
+<script src="main.js"></script>
+</body>
+</html>

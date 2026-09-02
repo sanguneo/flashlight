@@ -1,0 +1,237 @@
+:root {
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* 전경(땅+인물)을 통째로 내리는 오프셋. 하늘 배경은 그대로 */
+  --drop: 8vh;
+
+  /* 인물 배치 — 세 값만 만지면 크기/위치가 바뀝니다 */
+  --fig-h: 14%;      /* 인물 키 (화면 높이 대비) */
+  --fig-left: 8%;
+  --fig-bottom: 19.5%;
+
+  /* 팔 부착점 (몸통 이미지 기준) 과 팔 길이 (인물 키 대비) */
+  --arm-x: 72%;
+  --arm-y: 19.5%;
+  --arm-len: 190%;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #01030a;
+  overflow: hidden;
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color: #e8eefc;
+}
+
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  cursor: crosshair;
+  isolation: isolate;
+  user-select: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* 2번 — 아래에 깔린 고흐 밤하늘 */
+.layer--vangogh {
+  background-image: url("assets/sky-vangogh.png");
+  z-index: 1;
+  filter: saturate(1.05) brightness(.94);
+}
+
+/* 1번 — 위를 덮는 실사 밤하늘 */
+.layer--real {
+  background-image: url("assets/sky-real.png");
+  z-index: 2;
+}
+
+/* 손전등 궤적 안에서만 보이는 고흐 하늘 */
+.layer--reveal {
+  background-image: url("assets/sky-vangogh.png");
+  z-index: 3;
+  filter: saturate(1.18) brightness(1.08) contrast(1.05);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  will-change: mask-image, opacity;
+}
+
+/* 빛 자체의 헤이즈 */
+.layer--beam {
+  z-index: 4;
+  background: linear-gradient(to top,
+    rgba(255, 247, 219, .3),
+    rgba(206, 233, 255, .09) 44%,
+    transparent 78%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  will-change: mask-image, opacity;
+}
+
+/* 마스크 공통 — 각도 페더(conic) ∩ 거리 감쇠(radial) */
+.layer--reveal,
+.layer--beam {
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-composite: intersect;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-composite: source-in;
+}
+
+.stage.is-on .layer--reveal,
+.stage.is-on .layer--beam,
+.stage.is-on .bulb { opacity: 1; }
+
+/* 전경 — 생성된 언덕/도시불빛/나무. 아래쪽 여백은 그라디언트로 메꿈 */
+.layer--ground {
+  z-index: 5;
+  background-image:
+    url("assets/ground.png"),
+    linear-gradient(to bottom, transparent 78%, #01030a 88%);
+  background-position: center calc(100% + var(--drop)), center bottom;
+  background-size: 100% auto, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  filter: brightness(.74) saturate(.92);
+}
+
+/* 인물 */
+.figure {
+  position: absolute;
+  z-index: 7;
+  left: var(--fig-left);
+  bottom: calc(var(--fig-bottom) - var(--drop));
+  height: var(--fig-h);
+  pointer-events: none;
+  filter: drop-shadow(0 0 1px rgba(1, 3, 10, .9));
+}
+
+.figure__body {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
+.figure__pivot,
+.figure__tip {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.figure__pivot {
+  left: var(--arm-x);
+  top: var(--arm-y);
+}
+
+.figure__arm {
+  position: absolute;
+  left: var(--arm-x);
+  top: var(--arm-y);
+  width: var(--arm-len);
+  transform-origin: 0% 42.32%;   /* 팔 이미지 안의 어깨 위치 */
+  will-change: transform;
+}
+
+.figure__arm img {
+  display: block;
+  width: 100%;
+}
+
+.figure__tip {
+  left: 100%;
+  top: 58.39%;                   /* 팔 이미지 안의 렌즈 중심 */
+}
+
+/* 손전등 렌즈에서 새어나오는 빛 */
+.bulb {
+  position: absolute;
+  z-index: 6;
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 252, 232, .92) 0%,
+    rgba(255, 240, 190, .42) 16%,
+    rgba(180, 220, 255, .15) 40%,
+    transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  pointer-events: none;
+}
+
+.ui {
+  position: absolute;
+  z-index: 8;
+  right: clamp(20px, 4vw, 64px);
+  bottom: clamp(20px, 5vh, 56px);
+  max-width: 34ch;
+  text-align: right;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, .9);
+}
+
+.ui__eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #7f93b6;
+}
+
+.ui__title {
+  margin: 0 0 10px;
+  font-size: clamp(20px, 2.4vw, 34px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.ui__hint {
+  margin: 0 0 16px;
+  font-size: clamp(12px, 1.1vw, 15px);
+  line-height: 1.6;
+  color: #a9bad8;
+}
+
+kbd {
+  padding: 1px 6px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 5px;
+  font: inherit;
+  font-size: .9em;
+  background: rgba(255, 255, 255, .08);
+}
+
+.ui__toggle {
+  padding: 9px 18px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 999px;
+  background: rgba(10, 18, 38, .5);
+  backdrop-filter: blur(8px);
+  color: #e8eefc;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+
+.ui__toggle:hover {
+  background: rgba(30, 52, 96, .6);
+  border-color: rgba(255, 255, 255, .4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer--reveal, .layer--beam, .bulb { transition-duration: .01ms; }
+}
