@@ -212,7 +212,6 @@ html, body {
   font-size: clamp(12px, 1.1vw, 15px);
   line-height: 1.6;
   color: #a9bad8;
-  word-break: keep-all;   /* 한글 어절 중간에서 끊기지 않게 */
 }
 
 /* 좁은 화면에서만 쓰는 고정 줄바꿈 지점 */
@@ -280,7 +279,11 @@ html.touch .stage { cursor: default; }
   }
 
   .ui__title { font-size: clamp(19px, 5.4vw, 26px); }
-  .ui__hint { margin-bottom: 12px; font-size: clamp(12px, 3.4vw, 14px); }
+  .ui__hint {
+    margin-bottom: 12px;
+    font-size: clamp(12px, 3.4vw, 14px);
+    word-break: keep-all;   /* 한글 어절 중간에서 끊기지 않게 */
+  }
   .brk { display: inline; }
   .bulb { width: 68px; height: 68px; margin: -34px 0 0 -34px; }
 }
