@@ -263,7 +263,7 @@ html.touch .stage { cursor: default; }
     --drop: 2vh;
     --fig-h: 9.5%;
     --fig-left: 12%;
-    --fig-bottom: 12.5%;
+    --fig-bottom: 8.5%;
   }
 
   /* 파노라마를 가로 폭에 맞추면 세로 화면에선 땅이 화면 밖으로 밀린다 → 높이 기준으로 */
