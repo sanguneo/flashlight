@@ -29,8 +29,10 @@
 <meta name="twitter:description" content="손전등으로 밤하늘을 비추면 그 궤적 안에서만 고흐의 별이 빛나는 밤이 드러납니다." />
 <meta name="twitter:image" content="https://sanguneo.github.io/flashlight/assets/og.png" />
 
-<link rel="preload" as="image" href="assets/sky-real.png" />
-<link rel="preload" as="image" href="assets/sky-vangogh.png" />
+<link rel="preload" as="image" href="assets/sky-real.png" media="(min-width: 821px)" />
+<link rel="preload" as="image" href="assets/sky-vangogh.png" media="(min-width: 821px)" />
+<link rel="preload" as="image" href="assets/sky-real-sm.webp" media="(max-width: 820px)" />
+<link rel="preload" as="image" href="assets/sky-vangogh-sm.webp" media="(max-width: 820px)" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -63,7 +65,10 @@
   <div class="ui">
     <p class="ui__eyebrow">Interactive Showcase</p>
     <h1 class="ui__title">별이 빛나는 밤을 비춰보세요</h1>
-    <p class="ui__hint">마우스를 움직여 손전등을 겨누고, 화면을 클릭하거나 <kbd>Space</kbd> 로 껐다 켤 수 있어요.</p>
+    <p class="ui__hint">
+      <span class="hint--mouse">마우스를 움직여 손전등을 겨누고, 화면을 클릭하거나 <kbd>Space</kbd> 로 껐다 켤 수 있어요.</span>
+      <span class="hint--touch">화면을 누른 채 움직여 손전등을 겨눠보세요. 손을 떼면 꺼집니다.</span>
+    </p>
     <button class="ui__toggle" id="toggle" type="button" aria-pressed="true">손전등 끄기</button>
   </div>
 </main>
